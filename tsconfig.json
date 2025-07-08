@@ -5,10 +5,12 @@
 
     // Bundler mode
     "moduleResolution": "bundler",
+    "lib": ["ES2021", "DOM"],
     "module": "Preserve",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "skipLibCheck": true,
 
     "baseUrl": ".",
     "paths": {
@@ -16,5 +18,5 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "templates", "inputs", "build.ts"]
 }

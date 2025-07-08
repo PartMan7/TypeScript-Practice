@@ -6,13 +6,15 @@ const inputsDir = path.join(__dirname, '..', '..', 'inputs');
 async function check(input: string): Promise<boolean> {
   if (!input) throw new Error('Input not found.');
   const id = Bun.randomUUIDv7();
-  await Bun.write(path.join(inputsDir, `${id}.ts`), input);
+  const fileName = `${id}.template.ts`;
+  await Bun.write(path.join(inputsDir, fileName), input);
+  let success: boolean;
   try {
-    await $`bunx tsc --noEmit --strict --strictNullChecks ${id}.ts`.cwd(inputsDir);
-    return true;
+    await $`bunx tsc --noEmit --strict --strictNullChecks ${fileName}`.cwd(inputsDir);
+    success = true;
   } catch {
-    return false;
+    success = false;
   }
+  await Bun.file(path.join(inputsDir, fileName)).delete();
+  return success;
 }
-
-check('let a: number = null;').then(console.log);
