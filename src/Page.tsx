@@ -7,12 +7,26 @@
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
+import { Layout } from './components/Layout';
+
+import { Index } from './pages/index';
+import { Exercise } from './pages/Exercise';
+import { Page404 } from './pages/404';
+
+const route = window.location.pathname.replace(/^\/|\/$/g, '');
+const path = route.split('/');
+
+let page;
+if (route.length === 0) page = <Index />;
+else if (path[0] === 'exercise') {
+  if (path[1]) page = <Exercise template={path[1]} />;
+  else page = <Page404 />; // TODO
+} else page = <Page404 />;
 
 const elem = document.getElementById('root')!;
 const app = (
   <StrictMode>
-    <App />
+    <Layout>{page}</Layout>
   </StrictMode>
 );
 

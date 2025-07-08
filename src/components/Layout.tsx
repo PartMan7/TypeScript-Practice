@@ -1,5 +1,6 @@
+import '../index.css';
 import { type ReactElement, type ReactNode, useCallback, useState } from 'react';
-import { type Theme, ThemeProvider } from '@/ThemeProvider';
+import { type Theme, ThemeProvider } from '@/components/ThemeProvider';
 import '@theme-toggles/react/css/Classic.css';
 import { Classic as ThemeToggle } from '@theme-toggles/react';
 
@@ -29,8 +30,6 @@ export function Layout({ children }: { children: ReactNode }): ReactElement {
             onToggle={onToggle}
             placeholder="Toggle theme"
             className="text-4xl"
-            onPointerEnterCapture={() => {}}
-            onPointerLeaveCapture={() => {}}
           />
         </div>
         <div className="grow flex flex-col items-center">{children}</div>

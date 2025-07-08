@@ -1,8 +1,6 @@
-import './index.css';
-
 import { useCallback, useEffect, useState } from 'react';
 import { TemplateRenderer } from '@/components/molecules/TemplateRenderer';
-import { Layout } from '@/Layout';
+import { Layout } from '@/components/Layout';
 
 // const socket = new WebSocket(`ws://localhost:${Bun.env.BUN_PORT || 3000}/socket`);
 //
@@ -37,12 +35,6 @@ import { Layout } from '@/Layout';
 //   );
 // }
 
-export function App() {
-  return (
-    <Layout>
-      <TemplateRenderer template="intro" onSubmit={console.log} />
-    </Layout>
-  );
+export function Exercise({ template }: { template: string }) {
+  return <TemplateRenderer template={template} onSubmit={console.log} />;
 }
-
-export default App;

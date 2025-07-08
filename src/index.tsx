@@ -13,21 +13,6 @@ const server = serve({
       if (!server.upgrade(req)) return new Response('Could not open socket.', { status: 500 });
     },
 
-    '/api/hello': {
-      async GET(req) {
-        return Response.json({
-          message: 'Hello, world!',
-          method: 'GET',
-        });
-      },
-      async PUT(req) {
-        return Response.json({
-          message: 'Hello, world!',
-          method: 'PUT',
-        });
-      },
-    },
-
     '/api/templates/:template': async req => {
       const template = req.params.template;
       try {
@@ -36,13 +21,6 @@ const server = serve({
       } catch (e) {
         return Response.json({ message: 'Not found' }, { status: 404 });
       }
-    },
-
-    '/api/hello/:name': async req => {
-      const name = req.params.name;
-      return Response.json({
-        message: `Hello, ${name}!`,
-      });
     },
   },
 
@@ -53,10 +31,7 @@ const server = serve({
   },
 
   development: process.env.NODE_ENV !== 'production' && {
-    // Enable browser hot reloading in development
     hmr: true,
-
-    // Echo console logs from the browser to the server
     console: true,
   },
 });

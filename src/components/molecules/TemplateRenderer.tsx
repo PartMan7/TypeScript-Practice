@@ -26,7 +26,7 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
   useEffect(() => {
     let isMounted = true;
     fetch(`/api/templates/${template}`)
-      .then(res => (res.ok ? (res.json() as Promise<{ template: string }>) : (console.log(res), null)))
+      .then(res => res.json() as Promise<{ template: string }>)
       .then(data => {
         if (isMounted) setTemplateResponse(data?.template);
       });
@@ -40,7 +40,7 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
   const onChange = useRef<() => void | null>(null);
 
   const parts = useMemo(() => {
-    if (!templateResponse) return ['Not found...'];
+    if (!templateResponse) return ['Loading...'];
 
     const _parts = groupSub(templateResponse, {
       '\n': '\n',

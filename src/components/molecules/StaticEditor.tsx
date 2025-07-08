@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
+import { useTheme } from '../ThemeProvider';
+
+const SANDBOX_THEMES = {
+  light: 'sandbox',
+  dark: 'sandbox-dark',
+};
 
 export function StaticEditor({ code }: { code: string }): ReactElement {
   const [loaded, setLoaded] = useState(false);
   const sandboxRef = useRef(null);
+
+  const theme = useTheme();
 
   useEffect(() => {
     if (loaded) return;
@@ -35,7 +43,7 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
         // @ts-ignore -- TS added by script
         const sandbox = sandboxFactory.createTypeScriptSandbox(sandboxConfig, main, window.ts);
 
-        sandbox.monaco.editor.setTheme('sandbox-dark');
+        sandbox.monaco.editor.setTheme(SANDBOX_THEMES[theme]);
         sandbox.editor.updateOptions({ readOnly: true, renderValidationDecorations: 'on' });
 
         sandboxRef.current = sandbox;
@@ -43,12 +51,16 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
     };
 
     document.body.appendChild(getLoaderScript);
-    // Do not add loaded or code as a dependency!
+    // Do not add loaded or theme as a dependency!
   }, []);
 
   useEffect(() => {
     if (code !== sandboxRef.current?.getText?.()) sandboxRef.current?.setText?.(code);
   }, [code]);
+
+  useEffect(() => {
+    sandboxRef.current?.monaco.editor.setTheme(SANDBOX_THEMES[theme]);
+  }, [theme]);
 
   return (
     <>
