@@ -1,3 +1,1 @@
-export function Index() {
-  return 'Welcome to TypeScript exercises!';
-}
+export { Exercises as Index } from './Exercises';

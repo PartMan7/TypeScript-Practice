@@ -1,6 +1,7 @@
 import { serve } from 'bun';
 import path from 'path';
 import index from './index.html';
+import { readdir } from 'fs/promises';
 
 const server = serve({
   routes: {
@@ -21,6 +22,14 @@ const server = serve({
       } catch (e) {
         return Response.json({ message: 'Not found' }, { status: 404 });
       }
+    },
+
+    '/api/exercises': async () => {
+      const files = await readdir(path.join(__dirname, '..', 'templates'));
+      const exercises = files
+        .filter(file => file.endsWith('.template.ts'))
+        .map(file => file.replace('.template.ts', ''));
+      return Response.json({ exercises });
     },
   },
 

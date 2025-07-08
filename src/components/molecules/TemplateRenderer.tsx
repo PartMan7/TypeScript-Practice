@@ -27,7 +27,13 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
   useEffect(() => {
     let isMounted = true;
     fetch(`/api/templates/${template}`)
-      .then(res => (res.ok ? (res.json() as Promise<{ template: string }>) : setNoTemplate(true)))
+      .then(res => {
+        if (res.ok) return res.json() as Promise<{ template: string }>;
+        else {
+          setNoTemplate(true);
+          return null;
+        }
+      })
       .then(data => {
         if (isMounted) setTemplateResponse(data?.template);
       });
@@ -83,7 +89,9 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
       <Card className="bg-card/50 backdrop-blur-sm border-muted grow shrink basis-0 min-w-0">
         <CardContent className="pt-6">
           <pre className="text-start">
-            {noTemplate ? 'Template not found.' : parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
+            {noTemplate
+              ? 'Template not found.'
+              : parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
           </pre>
           <hr className="m-6 border-zinc-300 dark:border-zinc-600" />
           <Button onClick={() => console.log(getCurrentCode())}>Submit!</Button>
