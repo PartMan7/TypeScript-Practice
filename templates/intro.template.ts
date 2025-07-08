@@ -1,6 +1,6 @@
 import type { Equal, Expect } from '@type-challenges/utils';
 
-type SimpleRecord</* SHORT_INPUT */, /* SHORT_INPUT */> =
+type SimpleRecord</* SHORT_INPUT */> =
 /* LONG_INPUT */;
 
 /* Test Cases */
