@@ -22,7 +22,7 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
 
       require.config({
         paths: {
-          vs: 'https://playgroundcdn.typescriptlang.org/cdn/4.0.5/monaco/min/vs',
+          vs: 'https://playgroundcdn.typescriptlang.org/cdn/5.8.3/monaco/min/vs',
           sandbox: 'https://www.typescriptlang.org/js/sandbox',
         },
       });
