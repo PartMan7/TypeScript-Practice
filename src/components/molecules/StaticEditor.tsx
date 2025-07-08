@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
 import { useTheme } from '../ThemeProvider';
+import prettify from '@/lib/utils.ts';
 
 const SANDBOX_THEMES = {
   light: 'sandbox',
@@ -55,7 +56,11 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
   }, []);
 
   useEffect(() => {
-    if (code !== sandboxRef.current?.getText?.()) sandboxRef.current?.setText?.(code);
+    prettify(code)
+      .then(prettyCode => {
+        sandboxRef.current?.setText?.(prettyCode);
+      })
+      .catch(() => sandboxRef.current?.setText?.(code));
   }, [code]);
 
   useEffect(() => {
