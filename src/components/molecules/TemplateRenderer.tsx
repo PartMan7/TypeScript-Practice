@@ -12,8 +12,8 @@ import {
 import { groupSub } from 'group-sub';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { ShortInput } from '@/components/molecules/ShortInput';
-import { LongInput } from '@/components/molecules/LongInput';
+import { ShortInput } from '@/components/ui/ShortInput';
+import { LongInput } from '@/components/ui/LongInput';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { StaticEditor } from '@/components/molecules/StaticEditor';
