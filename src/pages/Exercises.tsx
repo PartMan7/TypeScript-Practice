@@ -16,9 +16,11 @@ export function Exercises() {
           <ul>
             {exercises.map(exercise => (
               <li key={exercise}>
-                <Button value={exercise} size="sm">
-                  <a href={`/exercise/${exercise}`}>{exercise}</a>
-                </Button>
+                <a href={`/exercise/${exercise}`}>
+                  <Button value={exercise} size="sm" className="cursor-pointer">
+                    {exercise}
+                  </Button>
+                </a>
               </li>
             ))}
           </ul>
