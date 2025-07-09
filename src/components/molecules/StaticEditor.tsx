@@ -36,7 +36,7 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
         setLoaded(false);
 
         const sandboxConfig = {
-          text: '// Your code will be rendered here once you start typing!',
+          text: code,
           compilerOptions: {},
           domID: 'monaco-editor-embed',
         };
@@ -52,7 +52,7 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
     };
 
     document.body.appendChild(getLoaderScript);
-    // Do not add loaded or theme as a dependency!
+    // Do not add code or loaded or theme as a dependency!
   }, []);
 
   useEffect(() => {

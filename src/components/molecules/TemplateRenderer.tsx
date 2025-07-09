@@ -14,42 +14,24 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { ShortInput } from '@/components/ui/ShortInput';
 import { LongInput } from '@/components/ui/LongInput';
-import { Card, CardContent } from '@/components/ui/card';
+import { ContentCard } from '@/components/atoms/ContentCard';
 import { Button } from '@/components/ui/button';
 import { StaticEditor } from '@/components/molecules/StaticEditor';
+import { useFetch } from '@/hooks/useFetch';
 
-type TemplateRendererProps = { template: string; onSubmit: (code: string) => void };
-
-function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): ReactElement {
-  const [noTemplate, setNoTemplate] = useState(false);
-  const [templateResponse, setTemplateResponse] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    let isMounted = true;
-    fetch(`/api/templates/${template}`)
-      .then(res => {
-        if (res.ok) return res.json() as Promise<{ template: string }>;
-        else {
-          setNoTemplate(true);
-          return null;
-        }
-      })
-      .then(data => {
-        if (isMounted) setTemplateResponse(data?.template);
-      });
-    return () => {
-      isMounted = false;
-    };
-  }, [template]);
-
-  const [currentCode, setCurrentCode] = useState(() => '');
+function BaseTemplateRenderer({
+  templateCode,
+  onSubmit,
+}: {
+  templateCode: string;
+  onSubmit: (code: string) => void;
+}): ReactElement {
+  const [currentCode, setCurrentCode] = useState(() => templateCode);
 
   const onChange = useRef<() => void | null>(null);
 
   const parts = useMemo(() => {
-    if (!templateResponse) return ['Loading...'];
-
-    const _parts = groupSub(templateResponse, {
+    const _parts = groupSub(templateCode, {
       '\n': '\n',
       '/* SHORT_INPUT */': ShortInput,
       '/* LONG_INPUT */': LongInput,
@@ -72,7 +54,7 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
     });
     setCurrentCode(_parts.map(part => (typeof part === 'string' ? part : part.getValue())).join(''));
     return _parts;
-  }, [templateResponse]);
+  }, [templateCode]);
 
   const getCurrentCode = useCallback(() => {
     return parts.map(part => (typeof part === 'string' ? part : part.getValue())).join('');
@@ -86,34 +68,34 @@ function BaseTemplateRenderer({ template, onSubmit }: TemplateRendererProps): Re
 
   return (
     <div className="flex gap-24 w-full justify-around m-12 max-w-full">
-      <Card className="bg-card/50 backdrop-blur-sm border-muted grow shrink basis-0 min-w-0">
-        <CardContent className="pt-6">
-          <pre className="text-start">
-            {noTemplate
-              ? 'Template not found.'
-              : parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
-          </pre>
-          <hr className="m-6 border-zinc-300 dark:border-zinc-600" />
-          <Button onClick={() => console.log(getCurrentCode())}>Submit!</Button>
-        </CardContent>
-      </Card>
-      <Card
-        className={`bg-card/50 backdrop-blur-sm border-muted grow shrink basis-0 min-w-0 ${noTemplate ? 'invisible' : ''}`}
-      >
-        <CardContent className="pt-6">
-          <StaticEditor code={currentCode} />
-        </CardContent>
-      </Card>
+      <ContentCard>
+        <pre className="text-start">
+          {parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
+        </pre>
+        <hr className="m-6 border-zinc-300 dark:border-zinc-600" />
+        <Button onClick={() => console.log(getCurrentCode())}>Submit!</Button>
+      </ContentCard>
+      <ContentCard>
+        <StaticEditor code={currentCode} />
+      </ContentCard>
     </div>
   );
 }
 
-export function TemplateRenderer(props: TemplateRendererProps): ReactElement {
+export function TemplateRenderer({
+  template,
+  onSubmit,
+}: {
+  template: string;
+  onSubmit: (code: string) => void;
+}): ReactElement {
+  const { data, loading, error } = useFetch<{ template: string }>(`/api/templates/${template}`);
+
   return (
-    <Suspense fallback={'Loading...'}>
-      <ErrorBoundary fallback="Template not found.">
-        <BaseTemplateRenderer {...props} />
-      </ErrorBoundary>
-    </Suspense>
+    <>
+      {loading ? <ContentCard>Loading...</ContentCard> : null}
+      {data ? <BaseTemplateRenderer onSubmit={onSubmit} templateCode={data.template} /> : null}
+      {error ? <ContentCard>Template not found.</ContentCard> : null}
+    </>
   );
 }
