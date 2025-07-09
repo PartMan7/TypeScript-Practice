@@ -31,6 +31,11 @@ const server = serve({
         .map(file => file.replace('.template.ts', ''));
       return Response.json({ exercises });
     },
+
+    '/favicon.ico': new Response(await Bun.file(path.join(__dirname, '..', 'assets', 'logo.png')).bytes(), {
+      headers: { 'Content-Type': 'image/x-icon' },
+    }),
+    '/robots.txt': new Response(await Bun.file(path.join(__dirname, '..', 'assets', 'robots.txt')).bytes()),
   },
 
   websocket: {
