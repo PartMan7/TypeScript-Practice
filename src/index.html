@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="@/assets/logo.png" />
     <title>TypeScript Exercises</title>
-    <script src="./theme.ts" fetchpriority="high"></script>
-    <script type="module" src="./Page.tsx" async></script>
     <style>
       :root {
         --background: hsla(0 0% 100%);
@@ -18,8 +16,15 @@
         background-color: var(--background);
       }
     </style>
+    <script type="module" src="./Page.tsx" async></script>
   </head>
   <body>
+    <script>
+      const pref = localStorage.getItem('theme');
+      if (pref === 'light') document.body.classList.add('light');
+      else document.body.classList.add('dark');
+      setTimeout(() => document.body.classList.add('duration-400'), 0);
+    </script>
     <div id="root" class="overflow-x-hidden"></div>
   </body>
 </html>
