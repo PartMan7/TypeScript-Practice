@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { TemplateRenderer } from '@/components/molecules/TemplateRenderer';
-import { Layout } from '@/components/Layout';
 
 // const socket = new WebSocket(`ws://localhost:${Bun.env.BUN_PORT || 3000}/socket`);
 //

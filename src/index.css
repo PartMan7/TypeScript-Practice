@@ -10,7 +10,6 @@
   }
 }
 
-/* cool Bun background animation 😎 */
 body::before {
   content: '';
   position: fixed;

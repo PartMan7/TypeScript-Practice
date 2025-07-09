@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react';
-import { useTheme } from '../ThemeProvider';
+import { useTheme } from '@/components/layout/ThemeProvider';
 import prettify from '@/lib/utils.ts';
 
 const SANDBOX_THEMES = {

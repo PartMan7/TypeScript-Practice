@@ -1,10 +1,10 @@
-import '../index.css';
+import '@/index.css';
 import { type ReactElement, type ReactNode, useCallback, useState } from 'react';
-import { type Theme, ThemeProvider } from '@/components/ThemeProvider';
+import { type Theme, ThemeProvider } from '@/components/layout/ThemeProvider';
 import '@theme-toggles/react/css/Classic.css';
 import { Classic as ThemeToggle } from '@theme-toggles/react';
 
-export function Layout({ children }: { children: ReactNode }): ReactElement {
+export function Layout({ header, children }: { header: ReactNode; children: ReactNode }): ReactElement {
   const [theme, setTheme] = useState<Theme>(() => {
     return localStorage.getItem('theme') === 'light' ? 'light' : 'dark';
   });
@@ -23,6 +23,7 @@ export function Layout({ children }: { children: ReactNode }): ReactElement {
     <ThemeProvider value={theme}>
       <div className="h-full w-full mx-auto p-8 text-center relative z-10 flex flex-col">
         <div className="flex grow-0 items-start">
+          {header}
           <div className="grow"></div>
           <ThemeToggle
             toggled={theme === 'dark'}

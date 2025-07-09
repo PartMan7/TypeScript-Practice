@@ -7,18 +7,22 @@
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Layout } from './components/Layout';
+import { Header } from '@/components/layout/Header';
+import { Layout } from '@/components/layout/Layout';
 
-import { Index } from './pages/index';
-import { Exercise } from './pages/Exercise';
-import { Page404 } from './pages/404';
+import { Index } from '@/pages/index';
+import { Exercise } from '@/pages/Exercise';
+import { Page404 } from '@/pages/404';
 
 const route = window.location.pathname.replace(/^\/|\/$/g, '');
 const path = route.split('/');
 
-let page;
-if (route.length === 0) page = <Index />;
-else if (path[0] === 'exercise') {
+let page,
+  header = <Header />;
+if (route.length === 0) {
+  header = null;
+  page = <Index />;
+} else if (path[0] === 'exercise') {
   if (path[1]) page = <Exercise template={path[1]} />;
   else page = <Page404 />; // TODO
 } else page = <Page404 />;
@@ -26,7 +30,7 @@ else if (path[0] === 'exercise') {
 const elem = document.getElementById('root')!;
 const app = (
   <StrictMode>
-    <Layout>{page}</Layout>
+    <Layout header={header}>{page}</Layout>
   </StrictMode>
 );
 

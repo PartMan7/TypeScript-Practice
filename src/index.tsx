@@ -1,6 +1,6 @@
 import { serve } from 'bun';
 import path from 'path';
-import index from './index.html';
+import index from '@/index.html';
 import { readdir } from 'fs/promises';
 
 const server = serve({
