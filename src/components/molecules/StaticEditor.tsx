@@ -76,7 +76,7 @@ export function StaticEditor({ code }: { code: string }): ReactElement {
       ) : null}
       <div>
         <h2 className="font-bold text-2xl mb-4">Preview</h2>
-        <div id="monaco-editor-embed" className="text-start w-full" style={{ height: 800 }}></div>
+        <div id="monaco-editor-embed" className="text-start w-full" style={{ height: 600 }}></div>
       </div>
     </>
   );
