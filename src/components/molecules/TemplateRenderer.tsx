@@ -8,9 +8,17 @@ import { Button } from '@/components/ui/button';
 import { StaticEditor } from '@/components/molecules/StaticEditor';
 import { useFetch } from '@/hooks/useFetch';
 import { getName, NameInput } from '@/components/molecules/NameInput';
-import { ClimbingBoxLoader, PacmanLoader } from 'react-spinners';
+import { PacmanLoader } from 'react-spinners';
 
 function BaseTemplateRenderer({ templateCode, template }: { templateCode: string; template: string }): ReactElement {
+  // I apologize to everyone who has ever taught me
+  // This is disgusting, but I'm proud of it
+  const [startTime] = useState(() => {
+    const current = Date.now();
+    localStorage.setItem(`STARTED_AT:${template}`, current.toString());
+    return current;
+  });
+
   const [currentCode, setCurrentCode] = useState(() => templateCode);
 
   const onChange = useRef<() => void | null>(null);
@@ -64,7 +72,7 @@ function BaseTemplateRenderer({ templateCode, template }: { templateCode: string
     fetch(`/api/submit/${template}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, code }),
+      body: JSON.stringify({ name, code, start: startTime }),
     }).then(res => {
       if (!res.ok) {
         setStatus(false);
@@ -116,7 +124,7 @@ function BaseTemplateRenderer({ templateCode, template }: { templateCode: string
   );
 }
 
-export function TemplateRenderer({ template }: { template: string; onSubmit: (code: string) => void }): ReactElement {
+export function TemplateRenderer({ template }: { template: string }): ReactElement {
   const { data, loading, error } = useFetch<{ template: string }>(`/api/templates/${template}`);
 
   return (

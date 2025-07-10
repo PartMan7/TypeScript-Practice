@@ -13,6 +13,7 @@ import { Layout } from '@/components/layout/Layout';
 import { Index } from '@/pages/index';
 import { Exercise } from '@/pages/Exercise';
 import { Page404 } from '@/pages/404';
+import { Logs } from '@/pages/Logs';
 
 const route = window.location.pathname.replace(/^\/|\/$/g, '');
 const path = route.split('/');
@@ -25,6 +26,8 @@ if (route.length === 0) {
 } else if (path[0] === 'exercise') {
   if (path[1]) page = <Exercise template={path[1]} />;
   else page = <Page404 />; // TODO
+} else if (path[0] === 'logs' && path.length === 1) {
+  page = <Logs />;
 } else page = <Page404 />;
 
 const elem = document.getElementById('root')!;

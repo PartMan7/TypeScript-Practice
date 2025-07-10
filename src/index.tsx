@@ -1,9 +1,12 @@
-import { serve } from 'bun';
+import { serve, type ServerWebSocket } from 'bun';
 import z from 'zod';
 import path from 'path';
 import index from '@/index.html';
 import { readdir } from 'fs/promises';
 import { validate } from '@/checker';
+import { getCurrentLogs, log } from '@/logger/logs.ts';
+
+const connectedSockets: Set<ServerWebSocket<any>> = new Set();
 
 const server = serve({
   routes: {
@@ -37,13 +40,22 @@ const server = serve({
     '/api/submit/:exercise': {
       POST: async req => {
         const exercise = req.params.exercise;
-        const reqData = z.object({ code: z.string(), name: z.string() }).safeParse(await req.json());
+        const reqData = z.object({ code: z.string(), name: z.string(), start: z.number() }).safeParse(await req.json());
         if (!reqData.success) return Response.json({ message: 'Invalid input' }, { status: 400 });
 
         try {
           const success = await validate(reqData.data.code, exercise);
           if (success) {
-            // TODO: Dispatch to socket and store in state
+            log(
+              {
+                code: reqData.data.code,
+                name: reqData.data.name,
+                start: new Date(reqData.data.start),
+                at: new Date(),
+                template: exercise,
+              },
+              connectedSockets
+            );
             return Response.json({ message: 'Valid input!' });
           } else return Response.json({ message: 'Failed.' }, { status: 400 });
         } catch {
@@ -59,8 +71,15 @@ const server = serve({
   },
 
   websocket: {
-    message(ws, message) {
-      ws.send('Response!');
+    open(ws) {
+      connectedSockets.add(ws);
+      ws.send(getCurrentLogs());
+    },
+    message() {
+      // Do nothing with incoming messages for sockets
+    },
+    close(ws) {
+      connectedSockets.delete(ws);
     },
   },
 
