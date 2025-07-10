@@ -83,7 +83,7 @@ function BaseTemplateRenderer({ templateCode, template }: { templateCode: string
         // TODO: Store in localStorage
       }
     });
-  }, [getCurrentCode, template]);
+  }, [getCurrentCode, template, startTime]);
 
   return (
     <div className="flex gap-24 w-full justify-around m-12 max-w-full">

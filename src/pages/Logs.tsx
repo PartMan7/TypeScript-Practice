@@ -56,7 +56,9 @@ export function Logs(): ReactElement {
   const [logs, setLogs] = useState<Log[]>([]);
 
   if (!socketRef.current) {
-    const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}/socket`);
+    const socket = new WebSocket(
+      `${process.env.NODE_ENV === 'production' ? 'wss' : 'ws'}://${window.location.hostname}:${window.location.port}/socket`
+    );
     socket.addEventListener('open', () => console.log('Socket connected'));
     socket.addEventListener('message', (message: MessageEvent) => {
       const newLogs = JSON.parse(message.data).map(
