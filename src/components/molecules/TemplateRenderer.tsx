@@ -88,7 +88,7 @@ function BaseTemplateRenderer({ templateCode, template }: { templateCode: string
   return (
     <div className="flex gap-24 w-full justify-around m-12 max-w-full">
       <ContentCard className="grow shrink basis-0 min-w-0">
-        <pre className="text-start">
+        <pre className="text-start whitespace-pre-wrap">
           {parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
         </pre>
         <hr className="m-6 border-zinc-300 dark:border-zinc-600" />
