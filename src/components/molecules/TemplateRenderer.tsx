@@ -1,16 +1,5 @@
-import {
-  type ReactElement,
-  type ReactNode,
-  Suspense,
-  use,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { type ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { groupSub } from 'group-sub';
-import { ErrorBoundary } from 'react-error-boundary';
 
 import { ShortInput } from '@/components/ui/ShortInput';
 import { LongInput } from '@/components/ui/LongInput';
@@ -18,14 +7,10 @@ import { ContentCard } from '@/components/atoms/ContentCard';
 import { Button } from '@/components/ui/button';
 import { StaticEditor } from '@/components/molecules/StaticEditor';
 import { useFetch } from '@/hooks/useFetch';
+import { getName, NameInput } from '@/components/molecules/NameInput';
+import { ClimbingBoxLoader, PacmanLoader } from 'react-spinners';
 
-function BaseTemplateRenderer({
-  templateCode,
-  onSubmit,
-}: {
-  templateCode: string;
-  onSubmit: (code: string) => void;
-}): ReactElement {
+function BaseTemplateRenderer({ templateCode, template }: { templateCode: string; template: string }): ReactElement {
   const [currentCode, setCurrentCode] = useState(() => templateCode);
 
   const onChange = useRef<() => void | null>(null);
@@ -66,6 +51,32 @@ function BaseTemplateRenderer({
     };
   }, [getCurrentCode]);
 
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<boolean | null>(null);
+
+  const handleSubmit = useCallback<() => void>(() => {
+    const code = getCurrentCode();
+    const name = getName();
+
+    if (!code || !name) return;
+
+    setSubmitting(true);
+    fetch(`/api/submit/${template}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, code }),
+    }).then(res => {
+      if (!res.ok) {
+        setStatus(false);
+        setSubmitting(false);
+      } else {
+        setStatus(true);
+        setSubmitting(false);
+        // TODO: Store in localStorage
+      }
+    });
+  }, [getCurrentCode, template]);
+
   return (
     <div className="flex gap-24 w-full justify-around m-12 max-w-full">
       <ContentCard className="grow shrink basis-0 min-w-0">
@@ -73,7 +84,30 @@ function BaseTemplateRenderer({
           {parts.map(part => (part === '\n' ? <br /> : typeof part === 'string' ? part : part.component))}
         </pre>
         <hr className="m-6 border-zinc-300 dark:border-zinc-600" />
-        <Button onClick={() => console.log(getCurrentCode())}>Submit!</Button>
+        <form className="flex gap-4 justify-center" action={handleSubmit}>
+          <NameInput />
+          <Button disabled={submitting} className="w-32">
+            {submitting ? 'Submitting...' : 'Submit!'}
+          </Button>
+          {/*TODO*/}
+          <div className="w-3 h-3">
+            {submitting ? (
+              <PacmanLoader
+                size={12}
+                color="var(--foreground)"
+                className="mt-1"
+                speedMultiplier={1.5}
+                cssOverride={{ width: 0 }}
+              />
+            ) : typeof status === 'boolean' ? (
+              status ? (
+                ':D'
+              ) : (
+                ':<'
+              )
+            ) : null}
+          </div>
+        </form>
       </ContentCard>
       <ContentCard className="grow shrink basis-0 min-w-0">
         <StaticEditor code={currentCode} />
@@ -82,19 +116,13 @@ function BaseTemplateRenderer({
   );
 }
 
-export function TemplateRenderer({
-  template,
-  onSubmit,
-}: {
-  template: string;
-  onSubmit: (code: string) => void;
-}): ReactElement {
+export function TemplateRenderer({ template }: { template: string; onSubmit: (code: string) => void }): ReactElement {
   const { data, loading, error } = useFetch<{ template: string }>(`/api/templates/${template}`);
 
   return (
     <>
       {loading ? <ContentCard>Loading...</ContentCard> : null}
-      {data ? <BaseTemplateRenderer onSubmit={onSubmit} templateCode={data.template} /> : null}
+      {data ? <BaseTemplateRenderer templateCode={data.template} template={template} /> : null}
       {error ? <ContentCard>Template not found.</ContentCard> : null}
     </>
   );
