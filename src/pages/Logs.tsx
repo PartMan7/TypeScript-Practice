@@ -1,7 +1,7 @@
 import { useRef, type ReactElement, useState, useMemo, useCallback } from 'react';
-import type { Log } from '@/logger/logs.ts';
+import type { Log } from '@/logger/logs';
 import { ContentCard } from '@/components/atoms/ContentCard';
-import { toHumanTime } from '@/utils/toHumanTime.ts';
+import { toHumanTime } from '@/utils/toHumanTime';
 
 function LogRenderer({
   selected,
@@ -68,7 +68,7 @@ export function Logs(): ReactElement {
           start: new Date(log.start),
         })
       );
-      setLogs(oldLogs => [...oldLogs, ...newLogs]);
+      setLogs(oldLogs => [...newLogs.toReversed(), ...oldLogs]);
     });
     socketRef.current = socket;
   }

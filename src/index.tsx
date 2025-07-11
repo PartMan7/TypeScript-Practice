@@ -3,7 +3,7 @@ import z from 'zod';
 import path from 'path';
 import { templates } from '../templates/metadata/metadata.json';
 import { validate } from '@/checker';
-import { getCurrentLogs, log } from '@/logger/logs.ts';
+import { getCurrentLogs, log } from '@/logger/logs';
 
 import exercises from '@/pages/exercises.html';
 import exercise from '@/pages/exercise.html';

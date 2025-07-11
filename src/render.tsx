@@ -1,6 +1,6 @@
 import { type ReactNode, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Layout } from '@/components/layout/Layout.tsx';
+import { Layout } from '@/components/layout/Layout';
 import { Header as DefaultHeader } from '@/components/layout/Header';
 
 type Header = ReactNode;
