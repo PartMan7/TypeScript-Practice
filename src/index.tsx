@@ -1,24 +1,26 @@
 import { serve, type ServerWebSocket } from 'bun';
 import z from 'zod';
 import path from 'path';
-import index from '@/index.html';
 import { readdir } from 'fs/promises';
 import { validate } from '@/checker';
 import { getCurrentLogs, log } from '@/logger/logs.ts';
+
+import exercises from '@/pages/exercises.html';
+import exercise from '@/pages/exercise.html';
+import logs from '@/pages/logs.html';
+import page404 from '@/pages/404.html';
 
 const connectedSockets: Set<ServerWebSocket<any>> = new Set();
 
 const server = serve({
   routes: {
-    // Serve index.html for all unmatched routes.
-    '/*': index,
+    '/': exercises,
+    '/exercise/:exercise': exercise,
+    '/logs': logs,
+
+    '/*': page404,
 
     '/api/*': () => Response.json({ message: 'API not found!' }, { status: 404 }),
-
-    '/socket': (req, server) => {
-      if (!server.upgrade(req)) return new Response('Could not open socket.', { status: 500 });
-    },
-
     '/api/templates/:template': async req => {
       const template = req.params.template;
       try {
@@ -28,7 +30,6 @@ const server = serve({
         return Response.json({ message: 'Not found' }, { status: 404 });
       }
     },
-
     '/api/exercises': async () => {
       const files = await readdir(path.join(__dirname, '..', 'templates'));
       const exercises = files
@@ -36,7 +37,6 @@ const server = serve({
         .map(file => file.replace('.template.ts', ''));
       return Response.json({ exercises });
     },
-
     '/api/submit/:exercise': {
       POST: async req => {
         const exercise = req.params.exercise;
@@ -68,6 +68,10 @@ const server = serve({
       headers: { 'Content-Type': 'image/x-icon' },
     }),
     '/robots.txt': new Response(await Bun.file(path.join(__dirname, '..', 'assets', 'robots.txt')).bytes()),
+
+    '/socket': (req, server) => {
+      if (!server.upgrade(req)) return new Response('Could not open socket.', { status: 500 });
+    },
   },
 
   websocket: {

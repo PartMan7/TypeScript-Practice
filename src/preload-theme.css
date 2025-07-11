@@ -1,0 +1,9 @@
+:root {
+  --background: hsla(0 0% 100%);
+}
+.dark {
+  --background: hsla(240 10% 3.9%);
+}
+body {
+  background-color: var(--background);
+}
