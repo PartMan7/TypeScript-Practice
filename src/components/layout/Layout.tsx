@@ -36,7 +36,7 @@ export function Layout({ header, children }: { header: ReactNode; children: Reac
         </div>
         <div className="grow flex flex-col items-center">{children}</div>
         <div className="flex grow-0 shrink-0 justify-end items-center min-h-24">
-          <a href="https://github.com/PartMan7/Typescript-Practice">
+          <a href="https://github.com/PartMan7/Typescript-Practice" target="_blank">
             <GitHub />
           </a>
         </div>
