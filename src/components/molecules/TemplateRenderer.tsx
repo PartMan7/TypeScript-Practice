@@ -108,11 +108,7 @@ function BaseTemplateRenderer({ templateCode, template }: { templateCode: string
                 cssOverride={{ width: 0 }}
               />
             ) : typeof status === 'boolean' ? (
-              status ? (
-                ':D'
-              ) : (
-                ':<'
-              )
+              <span className="text-3xl">{status ? '🔥' : '🫠'}</span>
             ) : null}
           </div>
         </form>
