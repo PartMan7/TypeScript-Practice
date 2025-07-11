@@ -136,7 +136,7 @@ const start = performance.now();
 
 // Scan for all HTML files in the project
 const entrypoints = [...new Bun.Glob('**.html').scanSync('src/pages')]
-  .map(a => path.resolve('src', a))
+  .map(a => path.resolve('src', 'pages', a))
   .filter(dir => !dir.includes('node_modules'));
 console.log(`📄 Found ${entrypoints.length} HTML ${entrypoints.length === 1 ? 'file' : 'files'} to process\n`);
 
