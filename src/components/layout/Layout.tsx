@@ -2,6 +2,7 @@ import '@/index.css';
 import { type ReactElement, type ReactNode, useCallback, useState } from 'react';
 import { type Theme, ThemeProvider } from '@/components/layout/ThemeProvider';
 import '@theme-toggles/react/css/Classic.css';
+import { GitHub } from '@/components/layout/GitHub';
 import { Classic as ThemeToggle } from '@theme-toggles/react';
 
 export function Layout({ header, children }: { header: ReactNode; children: ReactNode }): ReactElement {
@@ -21,10 +22,10 @@ export function Layout({ header, children }: { header: ReactNode; children: Reac
 
   return (
     <ThemeProvider value={theme}>
-      <div className="h-full w-full mx-auto p-8 text-center relative z-10 flex flex-col">
+      <div className="h-full w-full mx-auto p-8 pb-0 text-center relative z-10 flex flex-col">
         <div className="flex grow-0 items-start">
           {header}
-          <div className="grow"></div>
+          <div className="grow" />
           <ThemeToggle
             toggled={theme === 'dark'}
             duration={750}
@@ -34,6 +35,11 @@ export function Layout({ header, children }: { header: ReactNode; children: Reac
           />
         </div>
         <div className="grow flex flex-col items-center">{children}</div>
+        <div className="flex grow-0 shrink-0 justify-end items-center min-h-24">
+          <a href="https://github.com/PartMan7/Typescript-Practice">
+            <GitHub />
+          </a>
+        </div>
       </div>
     </ThemeProvider>
   );
