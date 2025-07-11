@@ -1,7 +1,7 @@
 import { serve, type ServerWebSocket } from 'bun';
 import z from 'zod';
 import path from 'path';
-import { readdir } from 'fs/promises';
+import { templates } from '../templates/metadata/metadata.json';
 import { validate } from '@/checker';
 import { getCurrentLogs, log } from '@/logger/logs.ts';
 
@@ -31,11 +31,7 @@ const server = serve({
       }
     },
     '/api/exercises': async () => {
-      const files = await readdir(path.join(__dirname, '..', 'templates'));
-      const exercises = files
-        .filter(file => file.endsWith('.template.ts'))
-        .map(file => file.replace('.template.ts', ''));
-      return Response.json({ exercises });
+      return Response.json({ exercises: templates });
     },
     '/api/submit/:exercise': {
       POST: async req => {

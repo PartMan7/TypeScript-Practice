@@ -1,8 +1,14 @@
 import { useFetch } from '@/hooks/useFetch';
-import { Button } from '@/components/ui/button';
+
+type Exercise = {
+  name: string;
+  desc: string;
+  path: string;
+  difficulty: number;
+};
 
 export function Exercises() {
-  const { data, loading } = useFetch<{ exercises: string[] }>('/api/exercises');
+  const { data, loading } = useFetch<{ exercises: Exercise[] }>('/api/exercises');
   const exercises = data?.exercises ?? [];
   return (
     <>
@@ -14,13 +20,19 @@ export function Exercises() {
         <>
           <div className="m-4 flex flex-wrap justify-center w-full max-w-196 gap-6">
             {exercises.map(exercise => (
-              <a href={`/exercise/${exercise}`} key={exercise}>
-                <Button
-                  value={exercise}
-                  className="cursor-pointer h-16 w-42 flex items-center justify-center text-lg uppercase"
-                >
-                  {exercise}
-                </Button>
+              <a
+                href={`/exercise/${exercise.path.replace(/\.template\.ts$/, '')}`}
+                className="cursor-pointer h-32 w-42 flex flex-col items-center justify-center bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 p-2 relative"
+                key={exercise.path}
+              >
+                <span className="absolute top-0 right-2 text-sm">{'☆'.repeat(exercise.difficulty)}</span>
+                <span className="text-lg uppercase">{exercise.name}</span>
+                {exercise.desc ? (
+                  <>
+                    <span />
+                    <span className="text-sm">{exercise.desc}</span>
+                  </>
+                ) : null}
               </a>
             ))}
           </div>
