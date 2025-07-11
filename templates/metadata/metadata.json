@@ -30,6 +30,12 @@
       "desc": "Split a String type by a given delimiter to get a Tuple!",
       "path": "split.template.ts",
       "difficulty": 4
+    },
+    {
+      "name": "MergeAll",
+      "desc": "Merge types provided in a Tuple.",
+      "path": "mergeAll.template.ts",
+      "difficulty": 5
     }
   ]
 }
