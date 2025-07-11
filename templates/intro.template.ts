@@ -1,8 +1,8 @@
 import type { Equal, Expect } from '@type-challenges/utils';
 
-type HelloWorld = {
+type HelloWorld =
   /* LONG_INPUT */
-};
+;
 
 /* Test Cases */
 
