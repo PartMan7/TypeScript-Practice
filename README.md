@@ -1,21 +1,7 @@
-# bun-react-tailwind-shadcn-template
+# TypeScript Practice
 
-To install dependencies:
+Deployed at https://typescript.partman.dev.
 
-```bash
-bun install
-```
+Renders a playground where you can try to solve TypeScript challenges in enforced templates.
 
-To start a development server:
-
-```bash
-bun dev
-```
-
-To run for production:
-
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.2.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Inspired by https://tsch.js.org/.
