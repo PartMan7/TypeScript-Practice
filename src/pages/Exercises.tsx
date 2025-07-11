@@ -6,24 +6,21 @@ export function Exercises() {
   const exercises = data?.exercises ?? [];
   return (
     <>
-      Welcome to TypeScript exercises!
+      <h2 className="text-3xl m-24">Welcome to TypeScript exercises!</h2>
       <br />
       {loading ? (
         'Loading exercises...'
       ) : (
         <>
-          Available exercises:
-          <ul>
+          <div className="m-4 flex justify-around w-full max-w-196">
             {exercises.map(exercise => (
-              <li key={exercise}>
-                <a href={`/exercise/${exercise}`}>
-                  <Button value={exercise} size="sm" className="cursor-pointer">
-                    {exercise}
-                  </Button>
-                </a>
-              </li>
+              <a href={`/exercise/${exercise}`} key={exercise}>
+                <Button value={exercise} className="cursor-pointer h-16 w-42 flex items-center justify-center text-lg uppercase">
+                  {exercise}
+                </Button>
+              </a>
             ))}
-          </ul>
+          </div>
         </>
       )}
     </>
