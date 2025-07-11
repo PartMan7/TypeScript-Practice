@@ -70,6 +70,11 @@ export function Logs(): ReactElement {
       );
       setLogs(oldLogs => [...newLogs.toReversed(), ...oldLogs]);
     });
+    socket.addEventListener('close', () => {
+      console.log('Socket disconnected');
+      socketRef.current = null;
+      setLogs([]);
+    });
     socketRef.current = socket;
   }
 
