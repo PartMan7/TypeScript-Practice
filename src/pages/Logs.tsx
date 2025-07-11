@@ -35,7 +35,7 @@ function LogsRenderer({ logs }: { logs: Log[] }): ReactElement {
   if (logs.length === 0) return <ContentCard>No logs...</ContentCard>;
   return (
     <div className="flex gap-4 justify-center w-full m-8 grow">
-      <div className="grow shrink basis-0 min-w-0 flex flex-col gap-2">
+      <div className="grow shrink basis-0 min-w-0 flex flex-col gap-2 max-h-screen overflow-y-auto">
         {logs.map(log => (
           <LogRenderer selected={selected === log} log={log} onClick={handleClick} />
         ))}
