@@ -1,0 +1,35 @@
+{
+  "$schema": "./metadata.template.json",
+  "templates": [
+    {
+      "name": "Intro",
+      "desc": "Simple introduction to how to use the site!",
+      "path": "intro.template.ts",
+      "difficulty": 0
+    },
+    {
+      "name": "Record",
+      "desc": "Implementing the 'Record' type!",
+      "path": "record.template.ts",
+      "difficulty": 1
+    },
+    {
+      "name": "SubPartial",
+      "desc": "A combination utility of Pick and Partial.",
+      "path": "subPartial.template.ts",
+      "difficulty": 2
+    },
+    {
+      "name": "Last",
+      "desc": "Find the last item in a Tuple.",
+      "path": "last.template.ts",
+      "difficulty": 3
+    },
+    {
+      "name": "Split",
+      "desc": "Split a String type by a given delimiter to get a Tuple!",
+      "path": "split.template.ts",
+      "difficulty": 4
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Metadata configuration",
+  "description": "Configuration for the templates rendered for TypeScript examples.",
+  "type": "object",
+  "properties": {
+    "templates": {
+      "type": "array",
+      "items": {
+        "description": "Advanced configuration.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name to display.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to the template, relative to `templates`.",
+            "type": "string"
+          },
+          "desc": {
+            "description": "A description of the exercise.",
+            "type": ["string", "null"]
+          },
+          "difficulty": {
+            "description": "A difficulty rating from 0-5 (where 5 is hardest).",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 5
+          }
+        },
+        "required": ["name", "path", "desc", "difficulty"]
+      }
+    }
+  }
+}
